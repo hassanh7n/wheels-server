@@ -159,41 +159,42 @@ const showStats = async(req, res) => {
 
 
 const uploadProductImage = async(req, res) => {
-    // console.log(req);
-    try {
+    console.log(req);
+  //   try {
   
-      let images = (req.files.file);
-      let imagesBuffer = [];
-        // console.log(images);
-      for (let i =0; i < images.length;  i++){
-            const result = await cloudinary.uploader.upload(images[i].tempFilePath, {
-            folder: "banners",
-      });
+  //     let images = (req.files.file);
+  //     console.log(images);
+  //     let imagesBuffer = [];
+  //       // console.log(images);
+  //     for (let i = 0; i < images.length + 1;  i++){
+  //           const result = await cloudinary.uploader.upload(images[i].tempFilePath, {
+  //           folder: "banners",
+  //     });
       
-        imagesBuffer.push({
-          url: result.secure_url
-        })
+  //       imagesBuffer.push({
+  //         url: result.secure_url
+  //       })
   
-        // console.log(result.secure_url);
-      }
-      console.log(imagesBuffer);
+  //       // console.log(result.secure_url);
+  //     }
+  //     console.log(imagesBuffer);
   
-      // req.body.images = imagesBuffer
-      //  const banner = await Banner.create(req.body)
-       if(imagesBuffer.length === 0){
-          img = images
-       }else{
-        img = imagesBuffer
-       }
-      res.status(201).json({
-          success: true,
-          img 
-      })
+  //     // req.body.images = imagesBuffer
+  //     //  const banner = await Banner.create(req.body)
+  //      if(imagesBuffer.length === 0){
+  //         img = images
+  //      }else{
+  //       img = imagesBuffer
+  //      }
+  //     res.status(201).json({
+  //         success: true,
+  //         img 
+  //     })
       
-  } catch (error) {
-      console.log(error);
+  // } catch (error) {
+  //     console.log(error);
       
-  }
+  // }
 }
 
 

@@ -159,36 +159,57 @@ const showStats = async(req, res) => {
 
 
 const uploadProductImage = async(req, res) => {
-    // console.log(req);
+    console.log(req.files.file);
     try {
-  
-      let images = (req.files.file);
+      let images = []
+      images = (req.files.file);
       let imagesBuffer = [];
-        // console.log(images);
-      for (let i =0; i < images.length;  i++){
-            const result = await cloudinary.uploader.upload(images[i].tempFilePath, {
-            folder: "banners",
-      });
+      if (images.length) {
+        for (let i =0; i < images.length;  i++){
+          const result = await cloudinary.uploader.upload(images[i].tempFilePath, {
+          folder: "banners",
+    });
+    
+      imagesBuffer.push({
+        url: result.secure_url
+      })
+
+      // console.log(result.secure_url);
+    }
+     if(images.length === 0){
+        img = images[0]
+     }else{
+      img = imagesBuffer
+     }
+
+     res.status(201).json({
+      success: true,
+      img 
+      })
+      } else {
+        const result = await cloudinary.uploader.upload(
+          req.files.file.tempFilePath,
+          // req.files.img1.tempFilePath,
+          // req.files.img2.tempFilePath,
+          {
+            use_filename: true,
+            folder: 'file-upload',
+          }
       
+        );
+        fs.unlinkSync(req.files.file.tempFilePath);
+        // fs.unlinkSync(req.files.img1.tempFilePath);
+        // fs.unlinkSync(req.files.img2.tempFilePath);
+        console.log(result);
         imagesBuffer.push({
           url: result.secure_url
         })
-  
-        // console.log(result.secure_url);
+        // imagesBuffer.push =  { src : result.secure_url }
+        return res.status(StatusCodes.OK).json(
+          {img : imagesBuffer}
+          // {msg : "yeah"}
+          );
       }
-      console.log(imagesBuffer);
-  
-      // req.body.images = imagesBuffer
-      //  const banner = await Banner.create(req.body)
-       if(imagesBuffer.length === 0){
-          img = images
-       }else{
-        img = imagesBuffer
-       }
-      res.status(201).json({
-          success: true,
-          img 
-      })
       
   } catch (error) {
       console.log(error);
